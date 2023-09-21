@@ -1,6 +1,9 @@
 package com.example.library.domain.entities
 
-import jakarta.persistence.*
+import jakarta.persistence.Entity
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
+import jakarta.persistence.Id
 import java.math.BigDecimal
 import java.time.Year
 
@@ -14,19 +17,11 @@ data class Book(
 
     val title: String,
 
-    @ManyToMany
-    @JoinTable(
-        name = "book_author",
-        joinColumns = [JoinColumn(name = "book_id")],
-        inverseJoinColumns = [JoinColumn(name = "author_id")]
-    )
-    val authors: MutableSet<Author> = mutableSetOf(),
+    val authorId: Long,
 
-    @ManyToOne
-    val category: Category,
+    val categoryId: Long,
 
-    @ManyToOne
-    val publisher: Publisher,
+    val publisherId: Long,
 
     val publicationYear: Year,
 

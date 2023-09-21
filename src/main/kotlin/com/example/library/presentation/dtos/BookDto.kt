@@ -7,9 +7,9 @@ data class BookDto(
     val id: Long?,
     val isbn: String,
     val title: String,
-    val authors: Set<AuthorDto>,
-    val category: CategoryDto,
-    val publisher: PublisherDto,
+    val authorId: Long,
+    val categoryId: Long,
+    val publisherId: Long,
     val publicationYear: Year,
     val price: BigDecimal
 )

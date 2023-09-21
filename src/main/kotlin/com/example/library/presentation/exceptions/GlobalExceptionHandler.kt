@@ -27,9 +27,18 @@ class GlobalExceptionHandler {
         )
     }
 
+    @ExceptionHandler(RequestValidationException::class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    fun handleRequestValidationException(exception: RequestValidationException): ErrorResponse {
+        return ErrorResponse(
+            errorCode = exception.error.code,
+            message = exception.error.message
+        )
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException::class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    fun handleValidationException(ex: MethodArgumentNotValidException): ErrorResponse {
+    fun handleMethodArgumentNotValidException(ex: MethodArgumentNotValidException): ErrorResponse {
         val errorMessage = ex.bindingResult.fieldErrors.joinToString(", ") {
             "${it.field} ${it.defaultMessage}"
         }

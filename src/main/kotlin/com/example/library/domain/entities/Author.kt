@@ -1,6 +1,9 @@
 package com.example.library.domain.entities
 
-import jakarta.persistence.*
+import jakarta.persistence.Entity
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
+import jakarta.persistence.Id
 
 @Entity
 data class Author(
@@ -8,8 +11,5 @@ data class Author(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
 
-    val name: String,
-
-    @ManyToMany(mappedBy = "authors")
-    val books: MutableSet<Book> = mutableSetOf()
+    var name: String
 ): BaseEntity()

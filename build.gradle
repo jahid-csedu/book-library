@@ -8,8 +8,13 @@ plugins {
 	id 'org.jetbrains.kotlin.plugin.jpa' version '1.8.22'
 }
 
+apply plugin: 'kotlin'
+apply plugin: 'kotlin-kapt'
+
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
+def mapstructVersion = '1.5.5.Final'
+def mockkVersion = '1.13.7'
 
 java {
 	sourceCompatibility = '17'
@@ -31,14 +36,16 @@ dependencies {
 	implementation 'com.fasterxml.jackson.module:jackson-module-kotlin'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.jetbrains.kotlin:kotlin-reflect'
+	implementation "org.mapstruct:mapstruct:${mapstructVersion}"
+	kapt "org.mapstruct:mapstruct-processor:${mapstructVersion}"
 	compileOnly 'org.projectlombok:lombok'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'com.h2database:h2'
-	annotationProcessor 'org.projectlombok:lombok'
+	kapt 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation "io.mockk:mockk:${mockkVersion}"
 }
 
-tasks.withType(KotlinCompile) {
+tasks.withType(KotlinCompile).configureEach {
 	kotlinOptions {
 		freeCompilerArgs += '-Xjsr305=strict'
 		jvmTarget = '17'
