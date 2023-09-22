@@ -15,6 +15,7 @@ group = 'com.example'
 version = '0.0.1-SNAPSHOT'
 def mapstructVersion = '1.5.5.Final'
 def mockkVersion = '1.13.7'
+def testContainerVersion = '1.19.0'
 
 java {
 	sourceCompatibility = '17'
@@ -39,15 +40,18 @@ dependencies {
 	implementation "org.mapstruct:mapstruct:${mapstructVersion}"
 	kapt "org.mapstruct:mapstruct-processor:${mapstructVersion}"
 	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'com.h2database:h2'
+	runtimeOnly 'org.postgresql:postgresql'
 	kapt 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation "io.mockk:mockk:${mockkVersion}"
+	testImplementation "org.testcontainers:testcontainers:${testContainerVersion}"
+	testImplementation "org.testcontainers:junit-jupiter:${testContainerVersion}"
+	testImplementation "org.testcontainers:postgresql:${testContainerVersion}"
 }
 
-tasks.withType(KotlinCompile).configureEach {
+tasks.withType(KotlinCompile) {
 	kotlinOptions {
-		freeCompilerArgs += '-Xjsr305=strict'
+		freeCompilerArgs += "-Xjsr305=strict"
 		jvmTarget = '17'
 	}
 }

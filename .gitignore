@@ -35,3 +35,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Docker Volumes ###
+/pgadmin-data
+/postgres-data

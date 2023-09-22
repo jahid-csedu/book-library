@@ -1,17 +1,16 @@
 package com.example.library.presentation.controllers
 
 import com.example.library.application.services.AuthorService
+import com.example.library.presentation.controllers.config.AuthorControllerTestConfig
 import com.example.library.presentation.dtos.AuthorDto
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.mockk.every
 import io.mockk.justRun
-import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
-import org.springframework.boot.test.context.TestConfiguration
-import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Import
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.delete
@@ -20,6 +19,7 @@ import org.springframework.test.web.servlet.post
 import org.springframework.test.web.servlet.put
 
 @WebMvcTest(AuthorController::class)
+@Import(AuthorControllerTestConfig::class)
 internal class AuthorControllerTest {
 
     @Autowired
@@ -30,12 +30,6 @@ internal class AuthorControllerTest {
 
     @Autowired
     private lateinit var authorService: AuthorService
-
-    @TestConfiguration
-    class ControllerTestConfig {
-        @Bean
-        fun service() = mockk<AuthorService>()
-    }
 
     @Test
     fun `should get all authors`() {

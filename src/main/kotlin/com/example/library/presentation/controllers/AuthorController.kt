@@ -2,6 +2,7 @@ package com.example.library.presentation.controllers
 
 import com.example.library.application.services.AuthorService
 import com.example.library.presentation.dtos.AuthorDto
+import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -32,7 +33,7 @@ class AuthorController(private val authorService: AuthorService) {
     @PutMapping("/{authorId}")
     fun updateAuthor(
         @PathVariable authorId: Long,
-        @RequestBody updatedAuthorDto: AuthorDto
+        @RequestBody @Valid updatedAuthorDto: AuthorDto
     ): ResponseEntity<AuthorDto> {
         val updatedAuthor = authorService.updateAuthor(authorId, updatedAuthorDto)
         return ResponseEntity(updatedAuthor, HttpStatus.OK)

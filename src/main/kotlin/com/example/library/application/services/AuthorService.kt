@@ -33,6 +33,7 @@ class AuthorService(private val authorRepository: AuthorRepository) {
     }
 
     fun deleteAuthor(authorId: Long) {
+        findAuthorByIdOrElseThrow(authorId)
         authorRepository.deleteById(authorId)
     }
 
