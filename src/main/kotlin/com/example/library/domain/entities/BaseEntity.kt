@@ -6,10 +6,11 @@ import jakarta.persistence.PrePersist
 import jakarta.persistence.PreUpdate
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedDate
+import java.io.Serializable
 import java.time.LocalDateTime
 
 @MappedSuperclass
-abstract class BaseEntity {
+abstract class BaseEntity: Serializable {
 
     @CreatedDate
     @Column(name = "created_date", nullable = false, updatable = false)

@@ -1,4 +1,4 @@
-package com.example.library.config
+package com.example.library.domain.config
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

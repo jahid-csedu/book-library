@@ -8,24 +8,30 @@ import com.example.library.domain.repositories.AuthorRepository
 import com.example.library.presentation.dtos.AuthorDto
 import com.example.library.presentation.exceptions.RequestValidationException
 import com.example.library.presentation.exceptions.ResourceNotFoundException
+import org.springframework.cache.annotation.CacheConfig
+import org.springframework.cache.annotation.CacheEvict
+import org.springframework.cache.annotation.CachePut
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
+@CacheConfig(cacheNames = ["authors"])
 class AuthorService(private val authorRepository: AuthorRepository) {
-
     @Transactional
     fun createAuthor(authorDto: AuthorDto): AuthorDto {
         val author = AuthorMapper.INSTANCE.toEntity(authorDto)
         return AuthorMapper.INSTANCE.toDto(authorRepository.save(author))
     }
 
+    @Cacheable(key = "#authorId")
     @Transactional(readOnly = true)
     fun getAuthorById(authorId: Long): AuthorDto {
         val author = findAuthorByIdOrElseThrow(authorId)
         return AuthorMapper.INSTANCE.toDto(author)
     }
 
+    @CachePut(key = "#authorId")
     @Transactional
     fun updateAuthor(authorId: Long, updatedAuthorDto: AuthorDto): AuthorDto {
         validateUpdateRequest(authorId, updatedAuthorDto)
@@ -36,6 +42,7 @@ class AuthorService(private val authorRepository: AuthorRepository) {
         return AuthorMapper.INSTANCE.toDto(authorRepository.save(author))
     }
 
+    @CacheEvict(key = "#authorId")
     @Transactional
     fun deleteAuthor(authorId: Long) {
         findAuthorByIdOrElseThrow(authorId)

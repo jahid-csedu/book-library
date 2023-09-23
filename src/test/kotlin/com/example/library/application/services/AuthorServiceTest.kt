@@ -112,8 +112,10 @@ internal class AuthorServiceTest {
     fun `delete author`() {
         // Arrange
         val authorId = 1L
+        val author = Author(id = authorId, name = "John Doe")
 
         // Mock behavior for the authorRepository
+        every { authorRepository.findById(authorId) } returns Optional.of(author)
         justRun { authorRepository.deleteById(authorId) }
 
         // Act

@@ -12,4 +12,4 @@ data class BookDto(
     val publisherId: Long,
     val publicationYear: Year,
     val price: BigDecimal
-)
+): BaseDto()
