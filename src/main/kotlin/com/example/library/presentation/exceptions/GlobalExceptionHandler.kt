@@ -37,7 +37,7 @@ class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException::class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     fun handleMethodArgumentNotValidException(ex: MethodArgumentNotValidException): ErrorResponse {
         val errorMessage = ex.bindingResult.fieldErrors.joinToString(", ") {
             "${it.field} ${it.defaultMessage}"
