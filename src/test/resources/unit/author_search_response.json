@@ -1,0 +1,30 @@
+{
+  "content": [
+    {
+      "id": 1,
+      "name": "John Doe",
+      "createdDate": null,
+      "lastModifiedDate": null
+    },
+    {
+      "id": 2,
+      "name": "Michael",
+      "createdDate": null,
+      "lastModifiedDate": null
+    }
+  ],
+  "pageable": "INSTANCE",
+  "last": true,
+  "totalElements": 2,
+  "totalPages": 1,
+  "size": 2,
+  "number": 0,
+  "sort": {
+    "empty": true,
+    "sorted": false,
+    "unsorted": true
+  },
+  "first": true,
+  "numberOfElements": 2,
+  "empty": false
+}

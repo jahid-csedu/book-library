@@ -10,8 +10,13 @@ import io.mockk.every
 import io.mockk.justRun
 import io.mockk.mockk
 import io.mockk.verify
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageImpl
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
 import java.util.Optional
 
 internal class AuthorServiceTest {
@@ -128,17 +133,23 @@ internal class AuthorServiceTest {
     @Test
     fun `get all authors`() {
         // Arrange
-        val authors = listOf(Author(id = 1, name = "John Doe"), Author(id = 2, name = "Jane Smith"))
+        val author1 = Author(id = 1L, name = "John Doe")
+        val author2 = Author(id = 2L, name = "Jane Smith")
+        val authors = listOf(author1, author2)
 
-        // Mock behavior for the authorRepository
-        every { authorRepository.findAll() } returns authors
+        // Create a Page object for testing
+        val page: Page<Author> = PageImpl(authors)
 
-        // Act
-        val authorDtos = authorService.getAllAuthors()
+        // Mock the behavior of the authorRepository
+        every { authorRepository.findAll(any(Pageable::class)) } returns page
 
-        // Assert
-        verify(exactly = 1) { authorRepository.findAll() }
-        assert(authorDtos.size == authors.size)
-        assert(authorDtos.all { it.id != null })
+        // Call the service method with a Pageable parameter
+        val pageable = Pageable.unpaged()
+        val result: Page<AuthorDto> = authorService.searchAuthors(pageable)
+
+        // Assert that the result contains the expected data
+        assertEquals(2, result.totalElements)
+        assertEquals("John Doe", result.content[0].name)
+        assertEquals("Jane Smith", result.content[1].name)
     }
 }

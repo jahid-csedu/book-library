@@ -15,6 +15,8 @@ import org.springframework.test.web.servlet.delete
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.post
 import org.springframework.test.web.servlet.put
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -93,12 +95,16 @@ class AuthorIntegrationTest : BaseIntegrationTest() {
 
     @Test
     @Sql("/author-data.sql")
-    fun `should get All authors`() {
-        mockMvc.get("/authors")
-            .andExpect {
-                status { isOk() }
-                jsonPath("$[0].name") { value("John Doe") }
-                jsonPath("$[1].name") { value("Mickey") }
-            }
+    fun `should get paginated authors`() {
+        val expected = javaClass.getResource("/integration/author_response.json").readText()
+
+        mockMvc.perform(
+            get("/authors")
+                .param("page", "0")
+                .param("size", "5")
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.content().json(expected))
     }
 }

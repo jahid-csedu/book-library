@@ -11,12 +11,16 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.context.annotation.Import
+import org.springframework.data.domain.PageImpl
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.delete
 import org.springframework.test.web.servlet.get
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.post
 import org.springframework.test.web.servlet.put
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @WebMvcTest(AuthorController::class)
 @Import(AuthorControllerTestConfig::class)
@@ -33,19 +37,19 @@ internal class AuthorControllerTest {
 
     @Test
     fun `should get all authors`() {
-        val authors = listOf(AuthorDto(id = 1, name = "John Doe"))
-        every { authorService.getAllAuthors() } returns authors
+        val authors = listOf(AuthorDto(id = 1, name = "John Doe"), AuthorDto(2, "Michael"))
+        every { authorService.searchAuthors(any()) } returns PageImpl(authors)
 
-        mockMvc.get("/authors")
-            .andDo { print() }
-            .andExpect {
-                status { isOk() }
-                content { contentType(MediaType.APPLICATION_JSON) }
-                verify(exactly = 1) { authorService.getAllAuthors() }
-                jsonPath("$[0].id") { value(authors.get(0).id) }
-                jsonPath("$[0].name") { value(authors.get(0).name) }
-            }
-            .andReturn()
+        val expectedResponseJson = javaClass.getResource("/unit/author_search_response.json").readText()
+
+        mockMvc.perform(
+            get("/authors")
+                .param("page", "0")
+                .param("size", "5")
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(status().isOk)
+            .andExpect(content().json(expectedResponseJson))
     }
 
     @Test
