@@ -53,7 +53,7 @@ class CategoryService(private val categoryRepository: CategoryRepository) {
     @Transactional
     @CacheEvict(key = "#categoryId")
     fun deleteCategory(categoryId: Long) {
-        val category = findCategoryByIdOrElseThrow(categoryId)
+        findCategoryByIdOrElseThrow(categoryId)
         categoryRepository.deleteById(categoryId)
     }
 
