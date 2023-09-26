@@ -23,7 +23,8 @@ class AuthorService(private val authorRepository: AuthorRepository) {
     @Transactional
     fun createAuthor(authorDto: AuthorDto): AuthorDto {
         val author = AuthorMapper.INSTANCE.toEntity(authorDto)
-        return AuthorMapper.INSTANCE.toDto(authorRepository.save(author))
+        val savedAuthor = authorRepository.save(author)
+        return AuthorMapper.INSTANCE.toDto(savedAuthor)
     }
 
     @Cacheable(key = "#authorId")
@@ -41,7 +42,8 @@ class AuthorService(private val authorRepository: AuthorRepository) {
 
         AuthorMapper.INSTANCE.toUpdateEntity(updatedAuthorDto, author)
 
-        return AuthorMapper.INSTANCE.toDto(authorRepository.save(author))
+        val updatedAuthor = authorRepository.save(author)
+        return AuthorMapper.INSTANCE.toDto(updatedAuthor)
     }
 
     @CacheEvict(key = "#authorId")

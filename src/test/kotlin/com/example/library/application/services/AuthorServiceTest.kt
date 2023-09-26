@@ -131,7 +131,7 @@ internal class AuthorServiceTest {
     }
 
     @Test
-    fun `get all authors`() {
+    fun `search authors`() {
         // Arrange
         val author1 = Author(id = 1L, name = "John Doe")
         val author2 = Author(id = 2L, name = "Jane Smith")
