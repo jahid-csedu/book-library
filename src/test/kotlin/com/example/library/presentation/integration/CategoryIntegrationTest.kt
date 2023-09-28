@@ -51,13 +51,13 @@ class CategoryIntegrationTest {
 
         @JvmStatic
         @BeforeAll
-        internal fun setUp(): Unit {
+        internal fun setUp() {
             postgreSQLContainer.start()
         }
 
         @JvmStatic
         @AfterAll
-        internal fun cleanUp(): Unit {
+        internal fun cleanUp() {
             postgreSQLContainer.stop()
         }
     }
