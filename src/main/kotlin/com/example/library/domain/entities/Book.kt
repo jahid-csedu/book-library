@@ -5,6 +5,7 @@ import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.persistence.SequenceGenerator
 import jakarta.persistence.Table
 import java.math.BigDecimal
 import java.time.Year
@@ -13,28 +14,29 @@ import java.time.Year
 @Table(name = "books")
 data class Book(
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "book_id_seq_generator")
+    @SequenceGenerator(name = "book_id_seq_generator", sequenceName = "book_id_seq", allocationSize = 1)
     @Column(name = "id")
     val id: Long? = null,
 
     @Column(name = "isbn")
-    val isbn: String,
+    var isbn: String,
 
     @Column(name = "title")
-    val title: String,
+    var title: String,
 
     @Column(name = "author_id")
-    val authorId: Long,
+    var authorId: Long,
 
     @Column(name = "category_id")
-    val categoryId: Long,
+    var categoryId: Long,
 
     @Column(name = "publisher_id")
-    val publisherId: Long,
+    var publisherId: Long,
 
     @Column(name = "publication_year")
-    val publicationYear: Year,
+    var publicationYear: Year,
 
     @Column(name = "price")
-    val price: BigDecimal
+    var price: BigDecimal
 ): BaseEntity()

@@ -44,7 +44,7 @@ class CategoryController(private val categoryService: CategoryService) {
     }
 
     @PutMapping("/{categoryId}")
-    fun createCategory(
+    fun updateCategory(
         @PathVariable categoryId: Long,
         @RequestBody @Valid categoryDto: CategoryDto
     ): ResponseEntity<CategoryDto> {
