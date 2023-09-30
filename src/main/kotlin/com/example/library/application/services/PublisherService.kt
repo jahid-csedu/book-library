@@ -6,11 +6,16 @@ import com.example.library.domain.entities.Publisher
 import com.example.library.domain.repositories.PublisherRepository
 import com.example.library.presentation.dtos.PublisherDto
 import com.example.library.presentation.exceptions.ResourceNotFoundException
+import org.springframework.cache.annotation.CacheConfig
+import org.springframework.cache.annotation.CacheEvict
+import org.springframework.cache.annotation.CachePut
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 
 @Service
+@CacheConfig(cacheNames = ["publishers"])
 class PublisherService(private val publisherRepository: PublisherRepository) {
 
     fun createPublisher(publisherDto: PublisherDto): PublisherDto {
@@ -18,6 +23,7 @@ class PublisherService(private val publisherRepository: PublisherRepository) {
         return PublisherMapper.INSTANCE.toDto(publisherRepository.save(publisher))
     }
 
+    @CachePut(key = "#id")
     fun updatePublisher(id: Long, publisherDto: PublisherDto): PublisherDto {
         validateId(id, publisherDto)
         val publisher = findPublisherByIdOrElseThrow(id)
@@ -25,11 +31,13 @@ class PublisherService(private val publisherRepository: PublisherRepository) {
         return PublisherMapper.INSTANCE.toDto(publisherRepository.save(publisher))
     }
 
+    @CacheEvict(key = "#id")
     fun deletePublisher(id: Long) {
         findPublisherByIdOrElseThrow(id)
         publisherRepository.deleteById(id)
     }
 
+    @Cacheable(key = "#id")
     fun getPublisherById(id: Long): PublisherDto {
         return PublisherMapper.INSTANCE.toDto(findPublisherByIdOrElseThrow(id))
     }
