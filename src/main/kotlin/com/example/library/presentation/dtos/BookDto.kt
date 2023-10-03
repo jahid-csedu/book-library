@@ -8,16 +8,16 @@ import java.time.Year
 
 data class BookDto(
     val id: Long?,
-    val isbn: String,
+    val isbn: String?,
     @field:NotBlank(message = ValidationErrors.BOOK_TITLE_REQUIRED)
-    val title: String,
+    val title: String?,
     @field:NotNull(message = ValidationErrors.AUTHOR_ID_REQUIRED)
-    val authorId: Long,
+    val authorId: Long?,
     @field:NotNull(message = ValidationErrors.CATEGORY_ID_REQUIRED)
-    val categoryId: Long,
+    val categoryId: Long?,
     @field:NotNull(message = ValidationErrors.PUBLISHER_ID_REQUIRED)
-    val publisherId: Long,
-    val publicationYear: Year,
+    val publisherId: Long?,
+    val publicationYear: Year?,
     @field:NotNull(message = ValidationErrors.PRICE_REQUIRED)
     val price: BigDecimal
 ): BaseDto()

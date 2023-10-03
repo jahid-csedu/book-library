@@ -7,5 +7,5 @@ data class CategoryDto(
     val id: Long?,
 
     @field:NotBlank(message = ValidationErrors.CATEGORY_NAME_REQUIRED)
-    val name: String
+    val name: String?
 ): BaseDto()

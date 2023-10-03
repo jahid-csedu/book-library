@@ -8,5 +8,5 @@ data class AuthorDto(
     val id: Long?,
 
     @field:NotBlank(message = ValidationErrors.AUTHOR_NAME_REQUIRED)
-    val name: String
+    val name: String?
 ): BaseDto()

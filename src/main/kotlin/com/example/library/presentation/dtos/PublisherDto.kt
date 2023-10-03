@@ -7,5 +7,5 @@ data class PublisherDto(
     val id: Long?,
 
     @field:NotBlank(message = ValidationErrors.PUBLISHER_NAME_REQUIRED)
-    val name: String
+    val name: String?
 ): BaseDto()
