@@ -1,0 +1,38 @@
+{
+  "content": [
+    {
+      "id": 1,
+      "isbn": "978-0451169518",
+      "title": "To Kill a Mockingbird",
+      "authorId": 2,
+      "categoryId": 3,
+      "publisherId": 4,
+      "publicationYear": "1960",
+      "price": 12.99
+    },
+    {
+      "id": 2,
+      "isbn": "978-0142416468",
+      "title": "The Catcher in the Rye",
+      "authorId": 1,
+      "categoryId": 5,
+      "publisherId": 6,
+      "publicationYear": "1937",
+      "price": 9.99
+    }
+  ],
+  "pageable": "INSTANCE",
+  "last": true,
+  "totalElements": 2,
+  "totalPages": 1,
+  "size": 2,
+  "number": 0,
+  "sort": {
+    "empty": true,
+    "sorted": false,
+    "unsorted": true
+  },
+  "first": true,
+  "numberOfElements": 2,
+  "empty": false
+}

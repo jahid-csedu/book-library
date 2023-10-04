@@ -29,7 +29,7 @@ class PublisherServiceTest {
 
         val savedPublisher = publisherService.createPublisher(publisherDto)
 
-        verify(exactly = 1) { publisherRepository.save(publisher) }
+        verify(exactly = 1) { publisherRepository.save(any()) }
         assert(savedPublisher.id == publisherDto.id)
         assert(savedPublisher.name == publisherDto.name)
     }

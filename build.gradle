@@ -8,6 +8,7 @@ plugins {
 	id 'org.jetbrains.kotlin.plugin.jpa' version '1.8.22'
 }
 
+
 apply plugin: 'kotlin'
 apply plugin: 'kotlin-kapt'
 
@@ -39,11 +40,9 @@ dependencies {
 	implementation 'org.jetbrains.kotlin:kotlin-reflect'
 	implementation 'org.springframework.boot:spring-boot-starter-cache'
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	runtimeOnly 'org.postgresql:postgresql'
 	implementation "org.mapstruct:mapstruct:${mapstructVersion}"
 	kapt "org.mapstruct:mapstruct-processor:${mapstructVersion}"
-	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'org.postgresql:postgresql'
-	kapt 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation "io.mockk:mockk:${mockkVersion}"
 	testImplementation "org.testcontainers:testcontainers:${testContainerVersion}"
