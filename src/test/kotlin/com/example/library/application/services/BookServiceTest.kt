@@ -113,7 +113,7 @@ class BookServiceTest {
         every { bookRepository.findById(any()) } returns Optional.of(book1)
         justRun { bookRepository.deleteById(any()) }
 
-        val book = bookService.deleteBook(bookId)
+        bookService.deleteBook(bookId)
 
         verify(exactly = 1) { bookRepository.deleteById(bookId) }
     }
