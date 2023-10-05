@@ -6,6 +6,8 @@ import com.example.library.domain.entities.Publisher
 import com.example.library.domain.repositories.PublisherRepository
 import com.example.library.presentation.dtos.PublisherDto
 import com.example.library.presentation.exceptions.ResourceNotFoundException
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.cache.annotation.CacheConfig
 import org.springframework.cache.annotation.CacheEvict
 import org.springframework.cache.annotation.CachePut
@@ -18,13 +20,17 @@ import org.springframework.stereotype.Service
 @CacheConfig(cacheNames = ["publishers"])
 class PublisherService(private val publisherRepository: PublisherRepository) {
 
+    val logger: Logger = LoggerFactory.getLogger(PublisherService::class.java)
+
     fun createPublisher(publisherDto: PublisherDto): PublisherDto {
+        logger.info("publisher create request: {}", publisherDto)
         val publisher = PublisherMapper.INSTANCE.toEntity(publisherDto)
         return PublisherMapper.INSTANCE.toDto(publisherRepository.save(publisher))
     }
 
     @CachePut(key = "#id")
     fun updatePublisher(id: Long, publisherDto: PublisherDto): PublisherDto {
+        logger.info("publisher update request: {}", publisherDto)
         validateId(id, publisherDto)
         val publisher = findPublisherByIdOrElseThrow(id)
         PublisherMapper.INSTANCE.toUpdateEntity(publisherDto, publisher)
@@ -32,14 +38,16 @@ class PublisherService(private val publisherRepository: PublisherRepository) {
     }
 
     @CacheEvict(key = "#id")
-    fun deletePublisher(id: Long) {
-        findPublisherByIdOrElseThrow(id)
-        publisherRepository.deleteById(id)
+    fun deletePublisher(publisherId: Long) {
+        logger.info("Deleting publisher by ID: {}", publisherId)
+        findPublisherByIdOrElseThrow(publisherId)
+        publisherRepository.deleteById(publisherId)
     }
 
     @Cacheable(key = "#id")
-    fun getPublisherById(id: Long): PublisherDto {
-        return PublisherMapper.INSTANCE.toDto(findPublisherByIdOrElseThrow(id))
+    fun getPublisherById(publisherId: Long): PublisherDto {
+        logger.info("Getting publisher by ID: {}", publisherId)
+        return PublisherMapper.INSTANCE.toDto(findPublisherByIdOrElseThrow(publisherId))
     }
 
     fun searchPublisher(pageable: Pageable): Page<PublisherDto> {

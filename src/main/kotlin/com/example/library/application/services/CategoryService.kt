@@ -7,6 +7,8 @@ import com.example.library.domain.repositories.CategoryRepository
 import com.example.library.presentation.dtos.CategoryDto
 import com.example.library.presentation.exceptions.RequestValidationException
 import com.example.library.presentation.exceptions.ResourceNotFoundException
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.cache.annotation.CacheConfig
 import org.springframework.cache.annotation.CacheEvict
 import org.springframework.cache.annotation.CachePut
@@ -20,9 +22,12 @@ import org.springframework.transaction.annotation.Transactional
 @CacheConfig(cacheNames = ["categories"])
 class CategoryService(private val categoryRepository: CategoryRepository) {
 
+    val logger: Logger = LoggerFactory.getLogger(CategoryService::class.java)
+
     @Transactional(readOnly = true)
     @Cacheable(key = "#categoryId")
     fun getCategoryById(categoryId: Long): CategoryDto {
+        logger.info("Getting category by ID: {}", categoryId)
         val category = findCategoryByIdOrElseThrow(categoryId)
         return CategoryMapper.INSTANCE.toDto(category)
     }
@@ -35,6 +40,7 @@ class CategoryService(private val categoryRepository: CategoryRepository) {
 
     @Transactional
     fun createCategory(categoryDto: CategoryDto): CategoryDto {
+        logger.info("Category create request: {}", categoryDto)
         val category = CategoryMapper.INSTANCE.toEntity(categoryDto)
         val savedCategory = categoryRepository.save(category)
         return CategoryMapper.INSTANCE.toDto(savedCategory)
@@ -43,6 +49,7 @@ class CategoryService(private val categoryRepository: CategoryRepository) {
     @Transactional
     @CachePut(key = "#categoryId")
     fun updateCategory(categoryId: Long, categoryDto: CategoryDto): CategoryDto {
+        logger.info("Category update request: {}", categoryDto)
         validateUpdateRequest(categoryId, categoryDto)
         val category = findCategoryByIdOrElseThrow(categoryId)
         CategoryMapper.INSTANCE.toUpdateEntity(categoryDto, category)
@@ -53,6 +60,7 @@ class CategoryService(private val categoryRepository: CategoryRepository) {
     @Transactional
     @CacheEvict(key = "#categoryId")
     fun deleteCategory(categoryId: Long) {
+        logger.info("Deleting category by ID: {}", categoryId)
         findCategoryByIdOrElseThrow(categoryId)
         categoryRepository.deleteById(categoryId)
     }
